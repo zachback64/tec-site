@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Topology Exploration Club — An expedition organization conducting systematic surveys of vinyl topology. Monthly excursions. Los Angeles.">
+<meta property="og:title" content="Topology Exploration Club">
+<meta property="og:description" content="Systematic surveys of vinyl topology. Monthly expeditions. Los Angeles.">
+<meta property="og:url" content="https://topologyexploration.club">
+<title>Topology Exploration Club</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&family=EB+Garamond:ital,wght@0,400;0,500;1,400;1,500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:     #f0ede6;
+  --bg2:    #e8e4db;
+  --surface:#e0dbd0;
+  --ink:    #1a1814;
+  --mid:    rgba(26,24,20,0.5);
+  --dim:    rgba(26,24,20,0.3);
+  --line:   rgba(26,24,20,0.1);
+  --line2:  rgba(26,24,20,0.18);
+  --orange: #d44c0d;
+  --orange2:#f26522;
+  --blue:   #1a4f8a;
+  --blue2:  #2563b0;
+  --green:  #2a6b3c;
+  --green2: #3a8c50;
+  --mono:   'Space Mono',monospace;
+  --ser:    'EB Garamond',Georgia,serif;
+}
+html{font-size:16px;scroll-behavior:smooth}
+body{background:var(--bg);color:var(--ink);font-family:var(--mono);font-weight:400;min-height:100vh;overflow-x:hidden}
+
+/* NAV */
+nav{
+  display:flex;align-items:stretch;height:48px;
+  border-bottom:1px solid var(--line2);background:var(--bg);
+  position:sticky;top:0;z-index:50;
+}
+.nav-org{
+  display:flex;align-items:center;padding:0 28px;
+  border-right:1px solid var(--line2);
+  font-size:9px;letter-spacing:0.3em;text-transform:uppercase;
+  color:var(--orange);white-space:nowrap;
+}
+.nav-center{
+  flex:1;display:flex;align-items:center;padding:0 28px;
+  font-size:9px;letter-spacing:0.15em;text-transform:uppercase;color:var(--dim);
+}
+.nav-links{display:flex;gap:0;list-style:none;margin-left:auto}
+.nav-links li{border-left:1px solid var(--line2)}
+.nav-links a{
+  display:flex;align-items:center;height:48px;padding:0 20px;
+  font-size:9px;letter-spacing:0.12em;text-transform:uppercase;
+  color:var(--mid);text-decoration:none;transition:color 0.12s,background 0.12s;
+}
+.nav-links a:hover{color:var(--ink);background:rgba(26,24,20,0.03)}
+.nav-links .cta a{color:#fff;background:var(--orange);border-right:1px solid var(--line2)}
+.nav-links .cta a:hover{background:var(--orange2)}
+
+/* HERO */
+.hero{
+  display:grid;grid-template-columns:1fr 400px;
+  min-height:calc(100vh - 48px);
+  border-bottom:1px solid var(--line2);
+}
+.hero-l{
+  padding:64px 56px 56px 48px;
+  display:flex;flex-direction:column;justify-content:space-between;
+  border-right:1px solid var(--line2);
+}
+.doc-header{
+  display:flex;align-items:center;gap:0;margin-bottom:52px;
+  border:1px solid var(--line2);width:fit-content;
+}
+.doc-tag{
+  padding:6px 14px;font-size:8px;letter-spacing:0.25em;text-transform:uppercase;
+  border-right:1px solid var(--line2);color:var(--dim);
+}
+.doc-tag:last-child{border-right:none}
+.doc-tag.orange{background:var(--orange);color:#fff}
+.doc-tag.green{color:var(--green)}
+.doc-tag.blue{color:var(--blue)}
+
+h1{
+  font-family:var(--ser);font-weight:400;
+  font-size:clamp(48px,5.5vw,88px);
+  line-height:0.9;letter-spacing:-0.02em;color:var(--ink);
+}
+h1 .it{font-style:italic}
+h1 .orange{color:var(--orange)}
+h1 .blue{color:var(--blue)}
+h1 .green{color:var(--green)}
+
+.hero-lower{margin-top:52px}
+.mission-statement{
+  font-family:var(--ser);font-size:17px;line-height:1.7;color:var(--mid);
+  max-width:520px;margin-bottom:40px;
+  padding-left:20px;border-left:2px solid var(--line2);
+}
+
+.data-row{
+  display:flex;align-items:stretch;
+  border-top:1px solid var(--line2);
+}
+.data-cell{
+  padding:16px 32px 16px 0;margin-right:32px;
+  border-right:1px solid var(--line2);
+}
+.data-cell:last-child{border-right:none;margin-right:0}
+.dc-val{
+  font-family:var(--ser);font-style:italic;
+  font-size:32px;line-height:1;color:var(--ink);
+}
+.dc-val.orange{color:var(--orange)}
+.dc-val.blue{color:var(--blue)}
+.dc-val.green{color:var(--green)}
+.dc-label{font-size:8px;letter-spacing:0.2em;text-transform:uppercase;color:var(--dim);margin-top:6px}
+
+.hero-r{
+  background:var(--bg2);display:flex;flex-direction:column;overflow:hidden;
+}
+.hero-photo-wrap{flex:1;position:relative;overflow:hidden}
+.hero-photo-wrap+.hero-photo-wrap{border-top:1px solid var(--line2)}
+.hero-photo-wrap img{
+  width:100%;height:100%;object-fit:cover;display:block;
+  filter:saturate(0.75) contrast(1.1) brightness(0.95);
+}
+.photo-overlay{
+  position:absolute;inset:0;
+  background:linear-gradient(to bottom,transparent 45%,rgba(240,237,230,0.75) 100%);
+}
+.photo-label{
+  position:absolute;bottom:0;left:0;right:0;padding:14px 18px;
+  display:flex;justify-content:space-between;align-items:flex-end;
+}
+.photo-label-l{font-size:8px;letter-spacing:0.2em;text-transform:uppercase;color:var(--mid);line-height:1.5}
+.photo-label-r{font-family:var(--ser);font-style:italic;font-size:11px;color:var(--dim)}
+
+/* SECTIONS */
+section{border-bottom:1px solid var(--line2)}
+
+.mission-brief{display:grid;grid-template-columns:180px 1fr 1fr}
+.brief-index{
+  padding:56px 28px;border-right:1px solid var(--line2);
+  display:flex;flex-direction:column;justify-content:space-between;
+}
+.brief-num{font-family:var(--ser);font-style:italic;font-size:64px;color:var(--line2);line-height:1}
+.brief-vert{
+  font-size:8px;letter-spacing:0.25em;text-transform:uppercase;color:var(--dim);
+  writing-mode:vertical-rl;transform:rotate(180deg);
+}
+.brief-col{padding:56px 48px;border-right:1px solid var(--line2)}
+.brief-col:last-child{border-right:none}
+.col-head{
+  font-size:8px;letter-spacing:0.25em;text-transform:uppercase;color:var(--dim);
+  padding-bottom:14px;margin-bottom:22px;border-bottom:1px solid var(--line2);
+}
+h2{font-family:var(--ser);font-weight:400;font-size:32px;line-height:1.05;color:var(--ink);margin-bottom:20px;letter-spacing:-0.01em}
+h2 .it{font-style:italic}
+
+.body-text{font-family:var(--ser);font-size:15px;line-height:1.8;color:var(--mid)}
+.body-text p+p{margin-top:14px}
+.body-text strong{color:var(--ink);font-weight:500}
+
+.field-dispatch{
+  font-family:var(--ser);font-style:italic;font-size:17px;line-height:1.7;
+  color:var(--ink);padding:22px 24px;
+  background:var(--surface);border:1px solid var(--line2);
+  border-left:3px solid var(--orange);margin-top:28px;
+}
+.dispatch-meta{
+  font-family:var(--mono);font-style:normal;font-size:8px;
+  letter-spacing:0.22em;text-transform:uppercase;
+  color:var(--green);margin-top:16px;display:block;
+}
+
+.spec-row{
+  display:flex;justify-content:space-between;align-items:baseline;
+  padding:10px 0;border-bottom:1px solid var(--line2);gap:12px;
+}
+.spec-row:first-child{border-top:1px solid var(--line2)}
+.sk{font-size:8px;letter-spacing:0.18em;text-transform:uppercase;color:var(--dim);flex-shrink:0}
+.sv{font-family:var(--ser);font-size:14px;text-align:right;color:var(--ink);line-height:1.3}
+.sv.orange{color:var(--orange)}
+.sv.blue{color:var(--blue)}
+.sv.green{color:var(--green)}
+
+/* PROTOCOL */
+.protocol-strip{display:flex;align-items:stretch;overflow:hidden}
+.proto-cell{flex:1;padding:28px 32px;border-right:1px solid var(--line2)}
+.proto-cell:last-child{border-right:none}
+.proto-num{font-size:8px;letter-spacing:0.22em;text-transform:uppercase;color:var(--dim);margin-bottom:12px}
+.proto-title{font-family:var(--ser);font-style:italic;font-size:18px;color:var(--ink);margin-bottom:8px;line-height:1.2}
+.proto-desc{font-size:11px;line-height:1.75;color:var(--mid)}
+.proto-cell:nth-child(1) .proto-title{color:var(--orange)}
+.proto-cell:nth-child(2) .proto-title{color:var(--blue)}
+.proto-cell:nth-child(3) .proto-title{color:var(--green)}
+.proto-cell:nth-child(4) .proto-title{color:var(--orange)}
+
+/* ACCESS */
+.access-section{display:grid;grid-template-columns:1fr 1fr}
+.acol{padding:56px 48px}
+.acol+.acol{border-left:1px solid var(--line2)}
+.sec-head{
+  font-size:8px;letter-spacing:0.25em;text-transform:uppercase;color:var(--dim);
+  padding-bottom:14px;margin-bottom:28px;border-bottom:1px solid var(--line2);
+  display:flex;justify-content:space-between;align-items:center;
+}
+.sec-head .open{color:var(--green)}
+
+.tabs{display:flex;margin-bottom:28px;border-bottom:1px solid var(--line2)}
+.ftab{
+  font-family:var(--mono);font-size:8px;letter-spacing:0.18em;text-transform:uppercase;
+  padding:9px 20px 9px 0;margin-right:24px;
+  border:none;border-bottom:2px solid transparent;background:transparent;
+  color:var(--dim);cursor:pointer;margin-bottom:-1px;transition:color 0.12s,border-color 0.12s;
+}
+.ftab.on{color:var(--orange);border-bottom-color:var(--orange)}
+
+.tpanel{display:none}
+.tpanel.on{display:block}
+.form-note{font-family:var(--ser);font-style:italic;font-size:14px;line-height:1.75;color:var(--mid);margin-bottom:28px}
+.fg{margin-bottom:20px}
+.fl{display:block;font-size:8px;letter-spacing:0.2em;text-transform:uppercase;color:var(--dim);margin-bottom:7px}
+.fi,.fta{
+  width:100%;background:transparent;border:none;
+  border-bottom:1px solid var(--line2);
+  padding:8px 0;font-family:var(--mono);font-size:11px;font-weight:400;
+  color:var(--ink);outline:none;border-radius:0;-webkit-appearance:none;
+  transition:border-color 0.12s;
+}
+.fi:focus,.fta:focus{border-color:var(--blue)}
+.fi::placeholder,.fta::placeholder{color:var(--dim)}
+.fta{resize:none;height:52px}
+.btn{
+  display:inline-flex;align-items:center;gap:12px;
+  background:var(--orange);color:#fff;border:none;
+  padding:11px 22px;font-family:var(--mono);font-size:8px;
+  letter-spacing:0.22em;text-transform:uppercase;cursor:pointer;
+  font-weight:700;transition:background 0.12s;margin-top:8px;
+}
+.btn:hover{background:var(--orange2)}
+.ok{display:none;padding:28px 0}
+.ok.on{display:block}
+.ok-tag{font-size:8px;letter-spacing:0.22em;text-transform:uppercase;color:var(--green);margin-bottom:10px}
+.ok-msg{font-family:var(--ser);font-style:italic;font-size:22px;line-height:1.35;color:var(--ink)}
+
+/* EVENT CARD */
+.ecard{border:1px solid var(--line2);margin-bottom:24px;overflow:hidden}
+.ecard-head{
+  padding:20px 24px;display:flex;align-items:center;justify-content:space-between;
+  border-bottom:1px solid var(--line2);background:var(--blue);
+}
+.ev-num{font-family:var(--ser);font-style:italic;font-size:40px;color:#fff;line-height:1;font-weight:400}
+.ev-title{font-family:var(--ser);font-size:14px;color:rgba(255,255,255,0.65)}
+.ecard-status{
+  font-size:8px;letter-spacing:0.2em;text-transform:uppercase;
+  color:#fff;padding:4px 10px;border:1px solid rgba(255,255,255,0.3);
+}
+.er{display:flex;justify-content:space-between;align-items:baseline;padding:10px 24px;border-bottom:1px solid var(--line2)}
+.er:last-child{border-bottom:none}
+.ek{font-size:8px;letter-spacing:0.15em;text-transform:uppercase;color:var(--dim)}
+.ev-val{font-family:var(--ser);font-size:13px;color:var(--ink)}
+.ev-val.alert{color:var(--orange)}
+.ev-val.green{color:var(--green)}
+
+/* ARCHIVE */
+.arc{display:flex;justify-content:space-between;align-items:baseline;padding:10px 0;border-bottom:1px solid var(--line2)}
+.arc:first-child{border-top:1px solid var(--line2)}
+.arc-k{font-size:8px;letter-spacing:0.14em;text-transform:uppercase;color:var(--dim)}
+.arc-v{font-family:var(--ser);font-style:italic;font-size:13px;color:var(--dim)}
+.arc-v.cur{color:var(--ink);font-style:normal}
+
+/* FOOTER */
+footer{display:flex;align-items:stretch;height:44px;border-top:1px solid var(--line2)}
+.foot-seg{
+  display:flex;align-items:center;padding:0 24px;
+  border-right:1px solid var(--line2);
+  font-size:8px;letter-spacing:0.15em;text-transform:uppercase;color:var(--dim);
+  text-decoration:none;transition:color 0.12s;
+}
+.foot-seg:hover{color:var(--ink)}
+.foot-seg:last-child{border-right:none;margin-left:auto}
+
+/* MOBILE */
+@media(max-width:768px){
+  .nav-center{display:none}
+  .hero{grid-template-columns:1fr}
+  .hero-r{display:none}
+  .hero-l{padding:40px 24px 48px}
+  .mission-brief{grid-template-columns:1fr}
+  .brief-index{display:none}
+  .brief-col{padding:40px 24px;border-right:none;border-bottom:1px solid var(--line2)}
+  .protocol-strip{flex-direction:column}
+  .proto-cell{border-right:none;border-bottom:1px solid var(--line2)}
+  .access-section{grid-template-columns:1fr}
+  .acol+.acol{border-left:none;border-top:1px solid var(--line2)}
+  .acol{padding:40px 24px}
+  .data-row{flex-wrap:wrap}
+  .data-cell{padding:12px 16px 12px 0;margin-right:16px}
+  footer{flex-wrap:wrap;height:auto}
+  .foot-seg{padding:12px 16px;border-bottom:1px solid var(--line2)}
+  .foot-seg:last-child{margin-left:0}
+  h1{font-size:clamp(44px,12vw,72px)}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-org">T·E·C</div>
+  <div class="nav-center">Topology Exploration Club — Est. 2025 — Los Angeles, CA</div>
+  <ul class="nav-links">
+    <li><a href="#brief">Mission brief</a></li>
+    <li><a href="#protocol">Protocol</a></li>
+    <li class="cta"><a href="#access">Vol. 03 — Apply</a></li>
+  </ul>
+</nav>
+
+<section class="hero">
+  <div class="hero-l">
+    <div>
+      <div class="doc-header">
+        <div class="doc-tag">Document type</div>
+        <div class="doc-tag orange">Mission brief</div>
+        <div class="doc-tag green">Vol. 03 — Active</div>
+        <div class="doc-tag blue">Mar Vista, CA</div>
+      </div>
+      <h1>
+        Top<span class="it">ology</span><br>
+        Explor<span class="it orange">ation</span><br>
+        <span class="it blue">Club</span>
+      </h1>
+    </div>
+    <div class="hero-lower">
+      <div class="mission-statement">
+        An expedition organization conducting systematic surveys of vinyl topology. Recruits undergo field training in sustained attentive listening, mess kit operation, and field report documentation. Monthly excursions. Los Angeles.
+      </div>
+      <div class="data-row">
+        <div class="data-cell">
+          <div class="dc-val orange" style="font-style:italic">03</div>
+          <div class="dc-label">Current volume</div>
+        </div>
+        <div class="data-cell">
+          <div class="dc-val blue">07</div>
+          <div class="dc-label">Clearances remaining</div>
+        </div>
+        <div class="data-cell">
+          <div class="dc-val green" style="font-size:18px;padding-top:8px">Monthly</div>
+          <div class="dc-label">Expedition cadence</div>
+        </div>
+        <div class="data-cell">
+          <div class="dc-val" style="font-size:18px;padding-top:8px">T−24h</div>
+          <div class="dc-label">Coordinates via SMS</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="hero-r">
+    <div class="hero-photo-wrap" style="flex:1">
+      <img src="images/vol01-instrument.jpg" alt="Turntable cartridge — survey instrument">
+      <div class="photo-overlay"></div>
+      <div class="photo-label">
+        <div class="photo-label-l">Survey instrument<br><span style="color:var(--orange);display:block">Stylus — specimen contact point</span></div>
+        <div class="photo-label-r">Vol. 01</div>
+      </div>
+    </div>
+    <div class="hero-photo-wrap" style="flex:1">
+      <img src="images/vol01-expeditionist.jpg" alt="Expeditionist at survey station — Vol. 01">
+      <div class="photo-overlay"></div>
+      <div class="photo-label">
+        <div class="photo-label-l">Expeditionist at survey station<br><span style="color:var(--blue);display:block">Attire: gorpcore</span></div>
+        <div class="photo-label-r">Vol. 01</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="brief" class="mission-brief">
+  <div class="brief-index">
+    <div class="brief-num">01</div>
+    <div class="brief-vert">Mission brief</div>
+  </div>
+  <div class="brief-col">
+    <div class="col-head">Organization / mandate</div>
+    <h2>What<br><span class="it">we do</span></h2>
+    <div class="body-text">
+      <p>TEC conducts monthly expeditions into the topography of recorded sound. The terrain is the vinyl groove — a physical landscape of peaks, valleys, and micro-structures that the stylus reads as signal.</p>
+      <p>Expeditionists arrive equipped with a <strong>mess kit</strong> — plate, bowl, utensils, cup — for consuming field rations during the survey. Each member submits a <strong>field report</strong> documenting their sensory observations of the terrain traversed.</p>
+      <p>This is not passive listening. This is fieldwork.</p>
+    </div>
+    <div class="field-dispatch">
+      "We're going to explore some peaks and valleys on Saturday with the help of two really small and hard crystals. I'll make some food and drinks for the voyage. If you are so equipped, please bring a mess kit in which you may receive your rations. You'll eat and listen attentively, recording each perceptible sensation in your Field Report."
+      <span class="dispatch-meta">Dispatch — Vol. 01 — Feb 2025 — Expedition Leader</span>
+    </div>
+  </div>
+  <div class="brief-col">
+    <div class="col-head">Expedition parameters</div>
+    <div>
+      <div class="spec-row"><span class="sk">Organization type</span><span class="sv">Expedition / field research</span></div>
+      <div class="spec-row"><span class="sk">Survey subject</span><span class="sv blue">Vinyl groove topology</span></div>
+      <div class="spec-row"><span class="sk">Instrument</span><span class="sv">Turntable · phono cartridge · stylus</span></div>
+      <div class="spec-row"><span class="sk">Sonic register</span><span class="sv green">Brazilian · house · electronics</span></div>
+      <div class="spec-row"><span class="sk">Departure condition</span><span class="sv">Solar descent (sunset)</span></div>
+      <div class="spec-row"><span class="sk">Site type</span><span class="sv">Private location — undisclosed until T−24h</span></div>
+      <div class="spec-row"><span class="sk">Required equipment</span><span class="sv orange">Mess kit (plate · bowl · utensils · cup)</span></div>
+      <div class="spec-row"><span class="sk">Deliverable</span><span class="sv">Field report — sensory log</span></div>
+      <div class="spec-row"><span class="sk">Attire</span><span class="sv">Gorpcore</span></div>
+      <div class="spec-row"><span class="sk">Access</span><span class="sv orange">Reviewed · approval required</span></div>
+      <div class="spec-row"><span class="sk">Cadence</span><span class="sv">Monthly</span></div>
+      <div class="spec-row"><span class="sk">Cost</span><span class="sv">No charge</span></div>
+    </div>
+  </div>
+</section>
+
+<section id="protocol" class="protocol-strip">
+  <div class="proto-cell">
+    <div class="proto-num">Protocol — 01</div>
+    <div class="proto-title">Arrival &amp; kit inspection</div>
+    <div class="proto-desc">Expeditionists arrive with mess kit. Equipment verified. Rations issued at survey station. Gorpcore attire confirmed.</div>
+  </div>
+  <div class="proto-cell">
+    <div class="proto-num">Protocol — 02</div>
+    <div class="proto-title">Survey commencement</div>
+    <div class="proto-desc">Stylus makes contact with terrain at solar descent. Two small hard crystals begin reading the groove topology. Active listening begins.</div>
+  </div>
+  <div class="proto-cell">
+    <div class="proto-num">Protocol — 03</div>
+    <div class="proto-title">Field documentation</div>
+    <div class="proto-desc">Each expeditionist maintains a sensory log throughout the survey. Perceptible sensations recorded in real time. Cross-referencing permitted.</div>
+  </div>
+  <div class="proto-cell">
+    <div class="proto-num">Protocol — 04</div>
+    <div class="proto-title">Field report submission</div>
+    <div class="proto-desc">Written report submitted post-expedition. Documents terrain encountered, sensory observations, and notable topological features. Due date assigned per expedition.</div>
+  </div>
+</section>
+
+<section class="access-section" id="access">
+  <div class="acol">
+    <div class="sec-head">
+      <span>Recruitment — access protocol</span>
+      <span class="open">Vol. 03 open</span>
+    </div>
+    <div class="tabs">
+      <button class="ftab on" onclick="stab('notify',this)">Signal list</button>
+      <button class="ftab" onclick="stab('apply',this)">Apply for clearance</button>
+    </div>
+    <div class="tpanel on" id="tp-notify">
+      <div id="nf">
+        <p class="form-note">Receive advance notice of each expedition by SMS. No other correspondence.</p>
+        <div class="fg"><label class="fl">Phone number</label><input class="fi" type="tel" id="n-ph" placeholder="+1 000 000 0000"></div>
+        <div class="fg"><label class="fl">Name</label><input class="fi" type="text" id="n-nm" placeholder="—"></div>
+        <div class="fg"><label class="fl">Email — optional, backup only</label><input class="fi" type="email" id="n-em" placeholder="—"></div>
+        <button class="btn" onclick="doN()">Add to signal list →</button>
+      </div>
+      <div class="ok" id="n-ok">
+        <div class="ok-tag">Signal logged</div>
+        <div class="ok-msg">You'll receive SMS<br>before next departure.</div>
+      </div>
+    </div>
+    <div class="tpanel" id="tp-apply">
+      <div id="rf">
+        <p class="form-note">TEC recruits experienced expeditionists. All applications reviewed by expedition leadership. Approval is not guaranteed. Accepted recruits notified by SMS.</p>
+        <div class="fg"><label class="fl">Full name</label><input class="fi" type="text" id="r-nm" placeholder="—"></div>
+        <div class="fg"><label class="fl">Phone number</label><input class="fi" type="tel" id="r-ph" placeholder="+1 000 000 0000"></div>
+        <div class="fg"><label class="fl">Email — optional</label><input class="fi" type="email" id="r-em" placeholder="—"></div>
+        <div class="fg"><label class="fl">How you located TEC</label><input class="fi" type="text" id="r-ref" placeholder="—"></div>
+        <div class="fg"><label class="fl">Relevant field experience</label><textarea class="fta" id="r-nt" placeholder="—"></textarea></div>
+        <button class="btn" onclick="doR()">Submit application →</button>
+      </div>
+      <div class="ok" id="r-ok">
+        <div class="ok-tag">Application received — Vol. 03</div>
+        <div class="ok-msg">Under review.<br>Clearance confirmed by SMS<br>if accepted.</div>
+      </div>
+    </div>
+  </div>
+  <div class="acol">
+    <div class="sec-head"><span>Active expedition</span></div>
+    <div class="ecard">
+      <div class="ecard-head">
+        <div>
+          <div class="ev-num">03</div>
+          <div class="ev-title">Mar Vista Survey</div>
+        </div>
+        <div class="ecard-status">Accepting applications</div>
+      </div>
+      <div>
+        <div class="er"><span class="ek">Survey zone</span><span class="ev-val">Mar Vista, Los Angeles</span></div>
+        <div class="er"><span class="ek">Coordinates</span><span class="ev-val">34.0°N 118.4°W — disclosed T−24h</span></div>
+        <div class="er"><span class="ek">Departure</span><span class="ev-val">Solar descent — April 2025</span></div>
+        <div class="er"><span class="ek">Clearances remaining</span><span class="ev-val alert">07</span></div>
+        <div class="er"><span class="ek">Required equipment</span><span class="ev-val">Mess kit</span></div>
+        <div class="er"><span class="ek">Deliverable</span><span class="ev-val green">Field report</span></div>
+        <div class="er"><span class="ek">Cost</span><span class="ev-val">No charge</span></div>
+      </div>
+    </div>
+    <p style="font-family:var(--ser);font-style:italic;font-size:13px;color:var(--dim);line-height:1.7;margin-bottom:36px">Application does not confirm clearance. Location transmitted by SMS only, T−24h before departure.</p>
+    <div class="sec-head"><span>Expedition archive</span></div>
+    <div class="arc"><span class="arc-k">Vol. 01</span><span class="arc-v">Feb 2025 — Private residence, Los Angeles</span></div>
+    <div class="arc"><span class="arc-k">Vol. 02</span><span class="arc-v">Mar 2025 — Location undisclosed, Los Angeles</span></div>
+    <div class="arc"><span class="arc-k">Vol. 03</span><span class="arc-v cur">Apr 2025 — Mar Vista, Los Angeles · active</span></div>
+  </div>
+</section>
+
+<footer>
+  <div class="foot-seg">Topology Exploration Club © 2025</div>
+  <div class="foot-seg">topologyexploration.club</div>
+  <a class="foot-seg" href="https://www.instagram.com/topologyexplorationclub" target="_blank">@topologyexplorationclub</a>
+  <a class="foot-seg" href="mailto:hello@topologyexploration.club">Contact expedition leadership</a>
+</footer>
+
+<script>
+function stab(id,btn){
+  document.querySelectorAll('.ftab').forEach(t=>t.classList.remove('on'));
+  document.querySelectorAll('.tpanel').forEach(p=>p.classList.remove('on'));
+  btn.classList.add('on');
+  document.getElementById('tp-'+id).classList.add('on');
+}
+function doN(){
+  const p=document.getElementById('n-ph');
+  if(!p.value||p.value.replace(/\D/g,'').length<7){p.style.borderColor='#d44c0d';return}
+  document.getElementById('nf').style.display='none';
+  document.getElementById('n-ok').classList.add('on');
+}
+function doR(){
+  const n=document.getElementById('r-nm'),p=document.getElementById('r-ph');
+  let ok=true;
+  if(!n.value){n.style.borderColor='#d44c0d';ok=false}
+  if(!p.value||p.value.replace(/\D/g,'').length<7){p.style.borderColor='#d44c0d';ok=false}
+  if(!ok)return;
+  document.getElementById('rf').style.display='none';
+  document.getElementById('r-ok').classList.add('on');
+}
+</script>
+</body>
+</html>
